@@ -46,7 +46,7 @@ const login = (req, res) => {
                 // 토큰 발행
                 const token = jwt.sign({
                     email : loginUser.email
-                }, process.envPRIVATE_KEY, {
+                }, process.env.PRIVATE_KEY, {
                     expiresIn : '5m',
                     issuer : 'yanghee'
                 });
@@ -54,12 +54,12 @@ const login = (req, res) => {
                 res.cookie('token', token, {
                     httpOnly : true
                 });
-                return res.status(StatusCodes);
-      } else {
-        return res.status(StatusCodes.UNAUTHORIZED).json(results);
-      }
-    } 
-  )
+                return res.status(StatusCodes.OK).json(results);
+            } else {
+                return res.status(StatusCodes.UNAUTHORIZED).json(results);
+            }
+        } 
+    )
 }
 
 const passwordResetRequest = (req, res) => {
