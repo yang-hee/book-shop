@@ -21,6 +21,7 @@ const join = (req, res) => {
 		(err, results) => {
 			if(err) {
 				// BAD REQUEST
+                console.log(err)
 				return res.status(StatusCodes.BAD_REQUEST).end();
 			}
 			return res.status(StatusCodes.CREATED).json(results);
