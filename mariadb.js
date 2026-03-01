@@ -1,12 +1,13 @@
-const mariadb = require('mysql2');
+const mariadb = require('mysql2/promise');
 
 // DB와 연결 통로 생성
 const connection = mariadb.createConnection({
-  host : 'localhost', 
-  user : 'root',
-  password : 'root',
-  database : 'Bookshop',
-  dataStrings : true
+  	host : 'localhost', 
+  	user : 'root',
+  	password : 'root',
+  	database : 'Bookshop',
+  	dataStrings : true
+	
 });
 
-module.exports = connection
+module.exports = connection;
