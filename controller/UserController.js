@@ -35,6 +35,7 @@ const login = (req, res) => {
     let sql = 'SELECT * FROM users WHERE email = ?'
     conn.query(sql, email,
         (err, results) => {
+            console.log(err, results)
             if(err) {
                 return res.status(StatusCodes.BAD_REQUEST).end();
             }
@@ -46,9 +47,10 @@ const login = (req, res) => {
             if(loginUser && loginUser.password == hashPassword) {
                 // 토큰 발행
                 const token = jwt.sign({
+                    id : loginUser.id,
                     email : loginUser.email
                 }, process.env.PRIVATE_KEY, {
-                    expiresIn : '5m',
+                    expiresIn : '3m',
                     issuer : 'yanghee'
                 });
                 // 토큰 쿠키에 담기
@@ -66,7 +68,7 @@ const login = (req, res) => {
 const passwordResetRequest = (req, res) => {
     const {email} = req.body
 
-    let sql = 'SELECT * FROM WHERE email = ?'
+    let sql = 'SELECT * FROM WHERE users email = ?'
     conn.query(sql, email,
         (err, results) => {
             if(err) {
