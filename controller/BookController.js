@@ -5,8 +5,6 @@ const jwt = require('jsonwebtoken')
 
 const allBooks = (req, res) => {
     let allBooksRes = {};
-
-
     // 카테고리 아이디가 있으면?
     // limit(page당 도서 수), current_page(현재 페이지 위치)은 프론트엔드에서 전달해줌 URL
     // offset => (currnet_page - 1) * limit
@@ -26,7 +24,6 @@ const allBooks = (req, res) => {
     }else if(new_books){
         sql += ' WHERE pub_date BETWEEN DATE_SUB(NOW(), INTERVAL 4 YEAR) AND NOW()';
     }
-    
     sql += ' LIMIT ? OFFSET ?';
     values.push(parseInt(limit), offset)
 
@@ -34,18 +31,21 @@ const allBooks = (req, res) => {
     conn.query(sql, values,
         (err, results) => {
             if(err) {
+                console.log(err);
                 // return res.status(StatusCodes.BAD_REQUEST).end();
             }
-            console.log(sql, values, results)
+            // console.log(sql, values, results)
             if(results.length){
+                // 테이블에서 pub_date로 받아온 데이터를 카멜케이스로 변경 pubDate!
+                results.map(function(result) {
+                    result.pubDate = result.pub_date;
+                    delete result.pub_date;
+                });
                 allBooksRes.books = results;
                 // return res.status(StatusCodes.OK).json(results);
             } else {
                 return res.status(StatusCodes.NOT_FOUND).end();
-            }
-        }
-    )
-
+    }})
     sql = 'SELECT found_rows()'
     conn.query(sql,
         (err, results) => {
@@ -59,8 +59,6 @@ const allBooks = (req, res) => {
             return res.status(StatusCodes.OK).json(allBooksRes);
         }
     )
-
-
 };
 
 const bookDetail = (req, res) => {

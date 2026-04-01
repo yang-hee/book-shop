@@ -1,23 +1,32 @@
 // express 모듈
-const express = require('express');
+const express = require("express");
 const app = express();
+const cors = require("cors");
 
 // dotenv 모듈
-const dotenv = require('dotenv');
+const dotenv = require("dotenv");
 dotenv.config();
 
 app.listen(process.env.PORT_NUMBER);
 
-const userRouter = require('./routes/users');
-const bookRouter = require('./routes/books');
-const likeRouter = require('./routes/likes');
-const cartRouter = require('./routes/carts');
-const orderRouter = require('./routes/orders');
-const categoryRouter = require('./routes/category');
+const userRouter = require("./routes/users");
+const bookRouter = require("./routes/books");
+const likeRouter = require("./routes/likes");
+const cartRouter = require("./routes/carts");
+const orderRouter = require("./routes/orders");
+const categoryRouter = require("./routes/category");
 
-app.use('/users', userRouter);
-app.use('/books', bookRouter);
-app.use('/likes', likeRouter);
-app.use('/carts', cartRouter);
-app.use('/orders', orderRouter);
-app.use('/category', categoryRouter);
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  }),
+);
+app.use(express.json());
+
+app.use("/users", userRouter);
+app.use("/books", bookRouter);
+app.use("/likes", likeRouter);
+app.use("/carts", cartRouter);
+app.use("/orders", orderRouter);
+app.use("/category", categoryRouter);
